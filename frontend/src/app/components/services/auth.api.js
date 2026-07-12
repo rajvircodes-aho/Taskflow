@@ -2,8 +2,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseUrl : " http://localhost:3000",
-    withCredentials : "true"
+    baseURL : "http://localhost:5000",
+    withCredentials : true
 })
 
 

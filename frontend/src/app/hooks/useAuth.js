@@ -13,6 +13,7 @@ export const useAuth =()=> {
         setLoading(true)
         try {
             const data = await login({ email, password })
+            console.log("LOGIN RESPONSE:", data)
             setUser(data.user)
         } catch (err) {
 
@@ -48,6 +49,7 @@ export const useAuth =()=> {
             try {
 
                 const data = await getMe()
+                console.log("GET ME RESPONSE:", data)
                 setUser(data.user)
             } catch (err) { } finally {
                 setLoading(false)

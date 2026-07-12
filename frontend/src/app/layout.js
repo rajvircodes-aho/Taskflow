@@ -1,5 +1,6 @@
 import "./globals.css";
 import Providers from "./provider/provider";
+import Protected from "./components/services/protected";
 
 export const metadata = {
   title: "Taskflow",
@@ -11,7 +12,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Providers>
+         <Protected>
           {children}
+          </Protected>
         </Providers>
       </body>
     </html>
