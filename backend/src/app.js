@@ -12,8 +12,10 @@ app.use(cors({
 }));
 
 const authRouter = require("./routes/auth.routes")
+const projectRouter = require("./routes/project.routes")
 
 app.use("/api/auth" , authRouter)
+app.use("/projects", projectRouter);
 
 
 module.exports = app;
