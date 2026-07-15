@@ -14,7 +14,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
         e.preventDefault()
         await handleLogin({email,password})
-        router.push("/homepage");
+        router.push("/projects");
     }
 
      if(loading){

@@ -63,3 +63,48 @@ export async function getMe() {
     }
 
 }
+
+export async function createProject(title,description){
+    try{
+        const response = await api.post("/projects", {title,description})
+        return response.data
+    }
+    catch (err){
+        console.log(err)
+    }
+}
+
+export async function getProjects(){
+    try {
+        const response = await api.get("/projects");
+        return response.data;
+    } catch(error){
+        console.log(error);
+        throw error;
+    }
+}
+
+export async function deleteProject(id){
+    try{
+        const response = await api.delete(`/projects/${id}`);
+        return response.data;
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
+}
+export async function updateProject(id, title, description){
+    try{
+        const response = await api.put(`/projects/${id}`, {
+            title,
+            description
+        });
+
+        return response.data;
+    }
+    catch(err){
+        console.log(err);
+        throw err;
+    }
+}
+
