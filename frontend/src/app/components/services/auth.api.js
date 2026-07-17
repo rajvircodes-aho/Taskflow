@@ -108,3 +108,77 @@ export async function updateProject(id, title, description){
     }
 }
 
+
+
+export async function createTask(title, description, projectId) {
+    try {
+        const response = await api.post("/tasks", {
+            title,
+            description,
+            project: projectId
+        });
+
+        return response.data;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+
+export async function getProjectTasks(projectId) {
+    try {
+        const response = await api.get(`/tasks/project/${projectId}`);
+
+        return response.data;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+
+export async function getTask(id) {
+    try {
+        const response = await api.get(`/tasks/${id}`);
+
+        return response.data;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+
+export async function updateTask(id, title, description, status) {
+    try {
+        const response = await api.put(`/tasks/${id}`, {
+            title,
+            description,
+            status
+        });
+
+        return response.data;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+
+export async function deleteTask(id) {
+    try {
+        const response = await api.delete(`/tasks/${id}`);
+
+        return response.data;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
