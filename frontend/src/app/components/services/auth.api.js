@@ -112,7 +112,7 @@ export async function updateProject(id, title, description){
 
 export async function createTask(title, description, projectId) {
     try {
-        const response = await api.post("/tasks", {
+        const response = await api.post("/api/tasks", {
             title,
             description,
             project: projectId
@@ -129,7 +129,7 @@ export async function createTask(title, description, projectId) {
 
 export async function getProjectTasks(projectId) {
     try {
-        const response = await api.get(`/tasks/project/${projectId}`);
+        const response = await api.get(`/api/tasks/project/${projectId}`);
 
         return response.data;
 
@@ -142,7 +142,7 @@ export async function getProjectTasks(projectId) {
 
 export async function getTask(id) {
     try {
-        const response = await api.get(`/tasks/${id}`);
+        const response = await api.get(`/api/tasks/${id}`);
 
         return response.data;
 
@@ -155,7 +155,7 @@ export async function getTask(id) {
 
 export async function updateTask(id, title, description, status) {
     try {
-        const response = await api.put(`/tasks/${id}`, {
+        const response = await api.put(`/api/tasks/${id}`, {
             title,
             description,
             status
@@ -172,7 +172,7 @@ export async function updateTask(id, title, description, status) {
 
 export async function deleteTask(id) {
     try {
-        const response = await api.delete(`/tasks/${id}`);
+        const response = await api.delete(`/api/tasks/${id}`);
 
         return response.data;
 

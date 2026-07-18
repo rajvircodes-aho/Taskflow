@@ -3,18 +3,22 @@ const Task = require("../models/task.model");
 
 async function createTask(req, res) {
     try {
-        const { title, description, projectId } = req.body;
+
+        const { title, description, project } = req.body;
 
         const task = await Task.create({
             title,
             description,
-            project: projectId,
+            project,
             createdBy: req.user.id
         });
 
         res.status(201).json(task);
 
     } catch (error) {
+
+        console.log(error);
+
         res.status(500).json({
             message: error.message
         });
@@ -43,7 +47,7 @@ async function getTasks(req, res) {
 async function getTask(req, res) {
     try {
 
-        const task = await Task.findById(req.params.taskId);
+        const task = await Task.findById(req.params.id);
 
         if (!task) {
             return res.status(404).json({
@@ -64,7 +68,7 @@ async function getTask(req, res) {
 async function updateTask(req, res) {
     try {
 
-        const task = await Task.findById(req.params.taskId);
+        const task = await Task.findById(req.params.id);
 
         if (!task) {
             return res.status(404).json({
@@ -97,7 +101,7 @@ async function updateTask(req, res) {
 async function deleteTask(req, res) {
     try {
 
-        const task = await Task.findById(req.params.taskId);
+        const task = await Task.findById(req.params.id);
 
 
         if (!task) {

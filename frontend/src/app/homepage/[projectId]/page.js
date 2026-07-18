@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useRouter, useParams } from "next/navigation";
 import { useTask } from "../../hooks/useTask";
@@ -12,6 +12,13 @@ const Page = () => {
   const router = useRouter();
 
   const { projectId } = useParams();
+  const {fetchTasks} = useTask()
+
+  useEffect(() => {
+  if (projectId) {
+    fetchTasks();
+  }
+}, [projectId]);
 
 
   const {
