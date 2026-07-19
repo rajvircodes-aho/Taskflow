@@ -19,6 +19,7 @@ async function createProject(req, res) {
   }
 }
 async function getProjects(req, res) {
+    console.log("Logged in user:", req.user);
 
     const projects = await Project.find({
         owner: req.user.id

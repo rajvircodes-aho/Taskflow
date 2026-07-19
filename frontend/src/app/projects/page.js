@@ -3,11 +3,13 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useProject } from "../hooks/useProject";
+import { useAuth } from "../hooks/useAuth";
 
 const ProjectsPage = () => {
   const router = useRouter();
 
   const { fetchProjects, projects } = useProject();
+  const {handleLogout} = useAuth()
 
   useEffect(() => {
     fetchProjects();
@@ -26,7 +28,7 @@ router.push("/addproject")
       <nav className="flex items-center justify-between px-10 py-6 border-b border-zinc-800">
         <h1 className="text-3xl font-bold text-red-500">Taskflow</h1>
 
-        <button className="bg-red-600 hover:bg-red-700 transition px-6 py-2 rounded-xl font-semibold">
+        <button onClick={handleLogout}className="bg-red-600 hover:bg-red-700 transition px-6 py-2 rounded-xl font-semibold">
           Logout
         </button>
       </nav>

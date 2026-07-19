@@ -4,7 +4,7 @@ import { createProject, getProjects, updateProject, deleteProject } from "../com
 import { useState, useEffect } from "react";
 
 
-export const useProject = () => {
+export const useProject = (user) => {
 
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export const useProject = () => {
 
             setProjects(prev => [
                 ...prev,
-                data.project
+                data
             ]);
 
         } catch(err) {
@@ -78,9 +78,13 @@ export const useProject = () => {
     };
 
 
-    useEffect(() => {
+ useEffect(() => {
+    if (user) {
         fetchProjects();
-    }, []);
+    } else {
+        setProjects([]);
+    }
+}, [user]);
 
 
     return {

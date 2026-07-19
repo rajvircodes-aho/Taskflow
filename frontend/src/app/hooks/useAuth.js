@@ -32,13 +32,15 @@ export const useAuth =()=> {
             setLoading(false)
         }
     }
-     const handleLogout = async () => {
+  const handleLogout = async () => {
         setLoading(true)
         try {
             const data = await logout()
             setUser(null)
+            window.location.href = '/login'
+            
         } catch (err) {
-
+            console.error(err)
         } finally {
             setLoading(false)
         }
