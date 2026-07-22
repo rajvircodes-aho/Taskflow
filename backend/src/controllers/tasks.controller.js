@@ -67,7 +67,7 @@ async function getTask(req, res) {
 
 async function updateTask(req, res) {
     try {
-
+console.log("BODY:", req.body);
         const task = await Task.findById(req.params.id);
 
         if (!task) {
@@ -89,7 +89,7 @@ async function updateTask(req, res) {
 
 
     } catch (error) {
-
+ console.log(error);
         res.status(500).json({
             message: error.message
         });

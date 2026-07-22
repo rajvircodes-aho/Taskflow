@@ -4,6 +4,16 @@ import React, { useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useRouter, useParams } from "next/navigation";
 import { useTask } from "../../hooks/useTask";
+import { DndContext } from "@dnd-kit/core";
+import Column from "@/app/components/column";
+
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+
+import TaskCard from "@/app/components/TaskCard";
+
 
 const Page = () => {
 
@@ -12,20 +22,58 @@ const Page = () => {
   const router = useRouter();
 
   const { projectId } = useParams();
-  const {fetchTasks} = useTask()
+
+ function handleDragEnd(event) {
+
+  const { active, over } = event;
+
+
+  if (!over) return;
+
+
+  const taskId = active.id;
+
+  const newStatus = over.id;
+
+
+ 
+  if (newStatus === undefined) return;
+
+
+
+  setTasks(prevTasks =>
+    prevTasks.map(task =>
+      task._id === taskId
+        ? {
+            ...task,
+            status: newStatus
+          }
+        : task
+    )
+  );
+
+
+  // Save to MongoDB
+  handleTaskChange(
+    taskId,
+    newStatus
+  );
+
+}
+ const {
+    tasks,
+    loading,
+    handleDeleteTask,
+    fetchTasks,
+    setTasks,
+    handleTaskChange
+  } = useTask(projectId);
 
   useEffect(() => {
   if (projectId) {
     fetchTasks();
   }
 }, [projectId]);
-
-
-  const {
-    tasks,
-    loading,
-    handleDeleteTask,
-  } = useTask(projectId);
 
 
 
@@ -125,7 +173,7 @@ const Page = () => {
         )
       }
 
-
+<DndContext onDragEnd={handleDragEnd}>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-8">
 
@@ -150,44 +198,34 @@ const Page = () => {
 
 
 
-          <div className="space-y-4">
+         <Column
+ id="todo"
+ title="Todo"
+>
 
 
-            {
-              todoTasks.map(task => (
+           <SortableContext
+  items={todoTasks.map(task => task._id)}
+  strategy={verticalListSortingStrategy}
+>
 
-                <div
-                  key={task._id}
-                  className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-red-500 transition"
-                >
+  {
+    todoTasks.map(task => (
 
-                  <h3 className="font-semibold">
-                    {task.title}
-                  </h3>
+      <TaskCard
+        key={task._id}
+        task={task}
+        handleDeleteTask={handleDeleteTask}
+      />
 
+    ))
+  }
 
-                  <p className="text-sm text-zinc-400 mt-2">
-                    {task.description}
-                  </p>
-
-
-
-                  <button
-                    onClick={() => handleDeleteTask(task._id)}
-                    className="mt-4 text-sm text-red-500 hover:text-red-400"
-                  >
-                    Delete
-                  </button>
-
-
-                </div>
-
-              ))
-            }
+</SortableContext>
 
 
 
-          </div>
+        </Column>
 
 
         </div>
@@ -213,44 +251,33 @@ const Page = () => {
 
 
 
-          <div className="space-y-4">
+          <Column
+ id="pending"
+ title="Pending"
+>
 
 
-            {
-              pendingTasks.map(task => (
+            <SortableContext
+  items={pendingTasks.map(task => task._id)}
+  strategy={verticalListSortingStrategy}
+>
 
-                <div
-                  key={task._id}
-                  className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-yellow-500 transition"
-                >
+{
+  pendingTasks.map(task => (
 
-                  <h3 className="font-semibold">
-                    {task.title}
-                  </h3>
+    <TaskCard
+      key={task._id}
+      task={task}
+      handleDeleteTask={handleDeleteTask}
+    />
 
+  ))
+}
 
-                  <p className="text-sm text-zinc-400 mt-2">
-                    {task.description}
-                  </p>
-
-
-                  <button
-                    onClick={() => handleDeleteTask(task._id)}
-                    className="mt-4 text-sm text-red-500 hover:text-red-400"
-                  >
-                    Delete
-                  </button>
+</SortableContext>
 
 
-                </div>
-
-
-              ))
-            }
-
-
-
-          </div>
+          </Column>
 
 
         </div>
@@ -278,42 +305,33 @@ const Page = () => {
 
 
 
-          <div className="space-y-4">
+         <Column
+ id="done"
+ title="Done"
+>
 
 
-            {
-              doneTasks.map(task => (
+           <SortableContext
+  items={doneTasks.map(task => task._id)}
+  strategy={verticalListSortingStrategy}
+>
 
-                <div
-                  key={task._id}
-                  className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-green-500 transition"
-                >
+{
+  doneTasks.map(task => (
 
-                  <h3 className="font-semibold">
-                    {task.title}
-                  </h3>
+    <TaskCard
+      key={task._id}
+      task={task}
+      handleDeleteTask={handleDeleteTask}
+    />
 
+  ))
+}
 
-                  <p className="text-sm text-zinc-400 mt-2">
-                    {task.description}
-                  </p>
-
-
-                  <button
-                    onClick={() => handleDeleteTask(task._id)}
-                    className="mt-4 text-sm text-red-500 hover:text-red-400"
-                  >
-                    Delete
-                  </button>
+</SortableContext>
 
 
-                </div>
-
-              ))
-            }
-
-
-          </div>
+         </Column>
 
 
         </div>
@@ -322,12 +340,16 @@ const Page = () => {
 
 
       </div>
-
+ </DndContext>
 
 
     </div>
+   
+    
   );
+  
 };
+
 
 
 export default Page;

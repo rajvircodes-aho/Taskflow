@@ -153,21 +153,18 @@ export async function getTask(id) {
 }
 
 
-export async function updateTask(id, title, description, status) {
-    try {
-        const response = await api.put(`/api/tasks/${id}`, {
-            title,
-            description,
-            status
-        });
+export const updateTask = async(id, data)=>{
+   console.log("Sending:", data);
+    const response = await axios.put(
+        `http://localhost:5000/api/tasks/${id}`,
+        data,
+        {
+            withCredentials:true
+        }
+    );
 
-        return response.data;
-
-    } catch(err) {
-        console.log(err);
-        throw err;
-    }
-}
+    return response.data;
+};
 
 
 export async function deleteTask(id) {

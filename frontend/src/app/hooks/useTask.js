@@ -77,6 +77,19 @@ export const useTask = (projectId) => {
         }
     };
 
+const handleTaskChange = async (taskId, status) => {
+    try {
+        const data = await updateTask(taskId, { status });
+
+        setTasks(prev =>
+            prev.map(task =>
+                task._id === taskId ? data : task
+            )
+        );
+    } catch (err) {
+        console.log(err);
+    }
+};
     const handleDeleteTask = async (taskId) => {
 
         try {
@@ -104,5 +117,7 @@ export const useTask = (projectId) => {
         handleCreateTask,
         handleUpdateTask,
         handleDeleteTask,
+        setTasks,
+        handleTaskChange
     };
 };
