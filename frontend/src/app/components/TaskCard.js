@@ -33,7 +33,8 @@ export default function TaskCard({ task, handleDeleteTask }) {
       <p>{task.description}</p>
 
       <button
-        onClick={() => handleDeleteTask(task._id)}
+        onPointerDown={(e) => e.stopPropagation()}
+  onClick={() => handleDeleteTask(task._id)}
       >
         Delete
       </button>

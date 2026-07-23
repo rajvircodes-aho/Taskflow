@@ -15,7 +15,7 @@ export default function Column({ id, title, children }) {
   return (
     <div
       ref={setNodeRef}
-      className="bg-zinc-950 rounded-xl border border-zinc-800 p-5 min-h-[300px]"
+      className="bg-zinc-950 rounded-xl border border-zinc-800 p-5 min-h-75"
     >
 
       <h2 className="text-xl font-semibold mb-5">

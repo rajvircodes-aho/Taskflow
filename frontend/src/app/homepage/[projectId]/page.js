@@ -33,13 +33,29 @@ const Page = () => {
 
   const taskId = active.id;
 
-  const newStatus = over.id;
 
 
- 
-  if (newStatus === undefined) return;
+  const overTask = tasks.find(
+    task => task._id === over.id
+  );
 
 
+
+  const newStatus = overTask
+    ? overTask.status
+    : over.id;
+
+
+
+  const currentTask = tasks.find(
+    task => task._id === taskId
+  );
+
+
+
+  if (currentTask.status === newStatus) {
+    return;
+  }
 
   setTasks(prevTasks =>
     prevTasks.map(task =>
@@ -52,8 +68,6 @@ const Page = () => {
     )
   );
 
-
-  // Save to MongoDB
   handleTaskChange(
     taskId,
     newStatus
