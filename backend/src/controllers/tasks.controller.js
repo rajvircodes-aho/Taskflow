@@ -10,7 +10,8 @@ async function createTask(req, res) {
             title,
             description,
             project,
-            createdBy: req.user.id
+            createdBy: req.user.id,
+            position:count
         });
 
         res.status(201).json(task);
@@ -30,9 +31,12 @@ async function createTask(req, res) {
 async function getTasks(req, res) {
     try {
 
-        const tasks = await Task.find({
-            project: req.params.projectId
-        });
+      const tasks = await Task.find({
+ project:req.params.projectId
+})
+.sort({
+ position:1
+});
 
         res.json(tasks);
 
@@ -127,12 +131,45 @@ async function deleteTask(req, res) {
 
     }
 }
+async function reorderTasks(req,res){
 
+try{
+
+const {tasks}=req.body;
+
+
+for(let item of tasks){
+
+await Task.findByIdAndUpdate(
+item.id,
+{
+position:item.position
+}
+);
+
+}
+
+
+res.json({
+message:"Order updated"
+});
+
+
+}catch(error){
+
+res.status(500).json({
+message:error.message
+});
+
+}
+
+}
 
 module.exports = {
     createTask,
     getTasks,
     getTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    reorderTasks
 };

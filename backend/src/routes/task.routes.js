@@ -15,13 +15,20 @@ router.get("/project/:projectId", authUser, taskController.getTasks);
 
 router.get("/:id", authUser, taskController.getTask);
 
-
+router.put(
+"/reorder",
+authUser,
+taskController.reorderTasks
+);
 
 router.put("/:id", authUser, taskController.updateTask);
 
 
 
 router.delete("/:id", authUser, taskController.deleteTask);
+
+
+
 
 
 module.exports = router;

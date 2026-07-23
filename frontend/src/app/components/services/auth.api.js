@@ -179,3 +179,25 @@ export async function deleteTask(id) {
     }
 }
 
+
+export const reorderTasks = async(tasks)=>{
+
+const response = await axios.put(
+
+"http://localhost:5000/api/tasks/reorder",
+
+{
+tasks
+},
+
+{
+withCredentials:true
+}
+
+);
+
+
+return response.data;
+
+};
+

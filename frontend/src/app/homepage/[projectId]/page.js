@@ -6,6 +6,8 @@ import { useRouter, useParams } from "next/navigation";
 import { useTask } from "../../hooks/useTask";
 import { DndContext } from "@dnd-kit/core";
 import Column from "@/app/components/column";
+import {arrayMove} from "@dnd-kit/sortable";
+import { reorderTasks } from "@/app/components/services/auth.api";
 
 import {
     SortableContext,
@@ -34,10 +36,17 @@ const Page = () => {
   const taskId = active.id;
 
 
-
   const overTask = tasks.find(
     task => task._id === over.id
   );
+
+
+  const currentTask = tasks.find(
+    task => task._id === taskId
+  );
+
+
+  if (!currentTask) return;
 
 
 
@@ -47,26 +56,79 @@ const Page = () => {
 
 
 
-  const currentTask = tasks.find(
-    task => task._id === taskId
+  if(currentTask.status === newStatus){
+
+    const oldIndex = tasks.findIndex(
+      task => task._id === taskId
+    );
+
+
+    const newIndex = tasks.findIndex(
+      task => task._id === over.id
+    );
+
+
+    if(oldIndex !== newIndex){
+
+  const updatedTasks = arrayMove(
+    tasks,
+    oldIndex,
+    newIndex
   );
 
 
+  const tasksWithPosition = updatedTasks.map(
+    (task,index)=>({
 
-  if (currentTask.status === newStatus) {
+      ...task,
+
+      position:index
+
+    })
+  );
+
+
+  setTasks(tasksWithPosition);
+
+console.log(
+  tasksWithPosition.map(task => ({
+    id: task._id,
+    position: task.position
+  }))
+);
+
+  reorderTasks(
+    tasksWithPosition.map(task=>({
+
+      id:task._id,
+
+      position:task.position
+
+    }))
+  );
+
+
+}
+
+
     return;
   }
 
-  setTasks(prevTasks =>
-    prevTasks.map(task =>
+
+
+  setTasks(prev =>
+    prev.map(task =>
       task._id === taskId
-        ? {
-            ...task,
-            status: newStatus
-          }
-        : task
+      ?
+      {
+        ...task,
+        status:newStatus
+      }
+      :
+      task
     )
   );
+
 
   handleTaskChange(
     taskId,
